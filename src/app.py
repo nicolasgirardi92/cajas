@@ -1,25 +1,32 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from src.servicio.servicio_caja import ServicioCaja
 
 app = Flask(__name__)
 
+servicio = ServicioCaja()
 @app.route("/")
 def home():
     return "Bienvenido"
 
 @app.route("/cajas/", methods=['POST'])
-def cajas():
-    return "Este Metodo crea cajas"
+def crear_caja():
+    data = request.get_json()
+    nombre = data['nombre']
+    saldo = data['saldo']
+    servicio.crear_caja(nombre, saldo)
+    return jsonify({"mensaje": f"Caja de '{nombre}' creada con saldo {saldo}"}), 201
 
 @app.route("/cajas/", methods=['GET'])
-def cajas():
+def obtener_cajas():
     return "Este Metodo devuelve todas cajas"
 
 @app.route("/cajas/<nombre>", methods=['GET'])
-def cajas(nombre):
-    return "Este Metodo devuelve la caja de " + nombre
+def obtener_caja(nombre):
+    caja = servicio.buscar_caja(nombre)
+    return jsonify(caja.to_dict()), 200
 
 @app.route("/cajas/<nombre>", methods=['UPDATE'])
-def cajas(nombre):
+def actualizar_saldo(nombre):
     return "Este Metodo Actualiza el saldo de " + nombre
 
 @app.route("/cajas/transferencia", methods=['DELETE'])
