@@ -23,12 +23,17 @@ def obtener_cajas():
 
 @app.route("/cajas/<nombre>", methods=['GET'])
 def obtener_caja(nombre):
-    caja = servicio.buscar_caja(nombre)
+    caja = servicio.buscar_caja(nombre).to_json()
     return jsonify(caja), 200
 
-@app.route("/cajas/<nombre>", methods=['UPDATE'])
+@app.route("/cajas/<nombre>", methods=['PUT'])
 def actualizar_saldo(nombre):
-    return "Este Metodo Actualiza el saldo de " + nombre
+    data = request.get_json()
+    try:
+        servicio.actualizar_saldo(nombre, data['saldo'])
+        return jsonify({"Mensaje": "Saldo actualizado"}), 200
+    except RuntimeError as e:
+        return jsonify({"Mensaje": f"Error: {e}"}), 400
 
 @app.route("/cajas/transferencia", methods=['DELETE'])
 def transferencia():

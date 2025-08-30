@@ -15,3 +15,8 @@ class ServicioCaja:
     def buscar_cajas(self):
         cajas = self.db.obtener_cajas()
         return [caja.to_dict() for caja in cajas]
+
+    def actualizar_saldo(self, nombre, monto):
+        caja = self.db.obtener_caja(nombre)
+        caja.actualizar_saldo(monto)
+        self.db.actualizar_caja(caja)

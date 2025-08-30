@@ -51,3 +51,11 @@ class MiDB:
             filas = cursor.fetchall()
             return [Caja(f[1], f[2], f[0]) for f in filas]
 
+    def actualizar_caja(self, caja):
+        with sqlite3.connect(self.path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "UPDATE cajas SET saldo = ? WHERE id = ?",
+                (caja.saldo, caja.id_usuario)
+            )
+            conn.commit()

@@ -10,3 +10,7 @@ class Caja:
             "nombre": self.nombre,
             "saldo": self.saldo
         }
+    def actualizar_saldo(self, monto):
+        self.saldo += monto
+        if self.saldo < 0:
+            raise RuntimeError("Saldo negativo")
