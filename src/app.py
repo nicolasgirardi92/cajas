@@ -18,12 +18,13 @@ def crear_caja():
 
 @app.route("/cajas/", methods=['GET'])
 def obtener_cajas():
-    return "Este Metodo devuelve todas cajas"
+    cajas = servicio.buscar_cajas()
+    return  jsonify(cajas), 200
 
 @app.route("/cajas/<nombre>", methods=['GET'])
 def obtener_caja(nombre):
     caja = servicio.buscar_caja(nombre)
-    return jsonify(caja.to_dict()), 200
+    return jsonify(caja), 200
 
 @app.route("/cajas/<nombre>", methods=['UPDATE'])
 def actualizar_saldo(nombre):
